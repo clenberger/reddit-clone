@@ -28,7 +28,7 @@ app.set('view engine', 'handlebars');
 
 
 // Routes
-app.get('/', (req, res) => res.render('index'));
+app.get('/', (req, res) => res.render('posts-index'));
 
 app.get('/posts/new', (req,res) => res.render('post-new'));
 // Start Server
