@@ -12,7 +12,7 @@ app.set('view engine', 'handlebars');
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Hello world');
+    res.render('index');
 });
 
 // Start Server
