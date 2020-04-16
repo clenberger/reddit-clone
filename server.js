@@ -4,8 +4,9 @@ const app = express();
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
-require('./controllers/posts.js')(app);
+
 require('./data/reddit-db');
+
 // Use Body Parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,7 +19,7 @@ app.use(expressValidator());
 // add db
 
 // Middleware
-
+require('./controllers/posts.js')(app);
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
