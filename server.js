@@ -19,11 +19,11 @@ app.use(expressValidator());
 // add db
 
 // Middleware
-require('./controllers/posts.js')(app);
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-
+require('./controllers/posts.js')(app);
 
 
 
