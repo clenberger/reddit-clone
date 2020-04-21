@@ -5,7 +5,7 @@ const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 
-require('./data/reddit-db');
+
 
 // Use Body Parser
 app.use(bodyParser.json());
@@ -24,13 +24,13 @@ app.use(expressValidator());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 require('./controllers/posts.js')(app);
-
+require('./data/reddit-db');
 
 
 // Routes
 app.get('/', (req, res) => res.render('posts-index'));
 
-app.get('/posts/new', (req,res) => res.render('post-new'));
+app.get('/post/new', (req,res) => res.render('post-new'));
 // Start Server
 app.listen(3000, () => {
     console.log('Reddit listening on port localhost:3000!');

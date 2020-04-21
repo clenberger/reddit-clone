@@ -3,7 +3,7 @@ const Post = require('../models/posts');
 module.exports = (app) => {
 
     // CREATE
-    app.post('/posts/new', (req, res) => {
+    app.post('/post/new', (req, res) => {
       // INSTANTIATE INSTANCE OF POST MODEL
       const post = new Post(req.body);
   
@@ -26,7 +26,7 @@ module.exports = (app) => {
 
     app.get("/posts/:id", function(req, res) {
       // LOOK UP THE POST
-      Post.findById(req.params.id)
+      Post.findById(req.params.id).lean()
         .then(post => {
           res.render("posts-show", { post });
         })
