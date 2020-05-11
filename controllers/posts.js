@@ -2,6 +2,16 @@ const Post = require('../models/posts');
 
 module.exports = (app) => {
 
+  app.get("/n/:subreddit", function(req, res) {
+    Post.find({ subreddit: req.params.subreddit })
+      .then(posts => {
+        res.render("posts-index", { posts });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+  
     // CREATE
     app.post('/post/new', (req, res) => {
       // INSTANTIATE INSTANCE OF POST MODEL
@@ -23,6 +33,8 @@ module.exports = (app) => {
         console.log(err.message);
       });
     });
+
+
 
     app.get("/posts/:id", function(req, res) {
       // LOOK UP THE POST
