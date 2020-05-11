@@ -24,6 +24,7 @@ app.use(expressValidator());
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 require('./controllers/posts.js')(app);
+require('./controllers/comments.js')(app);
 require('./data/reddit-db');
 
 
