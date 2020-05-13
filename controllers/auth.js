@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 module.exports = (app) => {
     // SIGN UP FORM
     app.get("/sign-up", (req, res) => {
+        const currentUser = req.user;
         res.render("sign-up");
     });
 
@@ -36,7 +37,8 @@ module.exports = (app) => {
 
     // LOGIN FORM
     app.get('/login', (req, res) => {
-        res.render('login');
+        const currentUser = req.user;
+        res.render('login', {currentUser});
     });
 
     // LOGIN
@@ -48,12 +50,14 @@ app.post("/login", (req, res) => {
         .then(user => {
             if (!user) {
             // User not found
+            console.log('Hello1')
             return res.status(401).send({ message: "Wrong Username or Password" });
             }
             // Check the password
             user.comparePassword(password, (err, isMatch) => {
             if (!isMatch) {
                 // Password does not match
+                console.log('Hello2')
                 return res.status(401).send({ message: "Wrong Username or password" });
             }
             // Create a token
