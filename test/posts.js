@@ -8,6 +8,8 @@ const expect = chai.expect;
 // we can use it in our tests.
 const Post = require('../models/posts');
 const server = require('../server');
+const User = require("../models/user");
+const agent = chai.request.agent(app);
 
 chai.should();
 chai.use(chaiHttp);
@@ -18,11 +20,29 @@ describe('Posts', function() {
     const newPost = {
         title: 'post title',
         url: 'https://www.google.com',
-        summary: 'post summary'
+        summary: 'post summary',
+        subreddit: 'post subreddit'
     };
+    const user = {
+        username: 'poststest',
+        password: 'testposts'
+    };
+    before(function (done) {
+        agent
+            .post('/sign-up')
+            .set("content-type", "application/x-www-form-urlencoded")
+            .send(user)
+            .then(function (res) {
+                done();
+            })
+            .catch(function (err) {
+                done(err);
+            });
+        });
     it('Should create with valid attributes at POST /posts/new', function(done) {
         // Checks how many posts there are now
         Post.estimatedDocumentCount()
+        console.log('hello3')
         .then(function (initialDocCount) {
             agent
                 .post("/post/new")
@@ -33,9 +53,10 @@ describe('Posts', function() {
                 .send(newPost)
                 .then(function (res) {
                     Post.estimatedDocumentCount()
+                    console.log('hello1')
                         .then(function (newDocCount) {
-                            console.log('Here0')
                             // Check that the database has one more post in it
+                            console.log('hello2')
                             expect(res).to.have.status(200);
                             // Check that the database has one more post in it
                             expect(newDocCount).to.be.equal(initialDocCount + 1)
@@ -43,21 +64,34 @@ describe('Posts', function() {
                         })
                         .catch(function (err) {
                             done(err);
-                            console.log('Here1')
                         });
                 })
                 .catch(function (err) {
                     done(err);
-                    console.log('Here2')
                 });
         })
         .catch(function (err) {
             done(err);
-            console.log('Here3')
         });
     });
-    after(function () {
-        Post.findOneAndDelete(newPost);
-    });
+    after(function (done) {
+        Post.findOneAndDelete(newPost)
+        .then(function (res) {
+            agent.close()
+      
+            User.findOneAndDelete({
+                username: user.username
+            })
+              .then(function (res) {
+                  done()
+              })
+              .catch(function (err) {
+                  done(err);
+              });
+        })
+        .catch(function (err) {
+            done(err);
+        });
+      });
 });
 console.log('Here')
