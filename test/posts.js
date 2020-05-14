@@ -42,7 +42,6 @@ describe('Posts', function() {
     it('Should create with valid attributes at POST /posts/new', function(done) {
         // Checks how many posts there are now
         Post.estimatedDocumentCount()
-        console.log('hello3')
         .then(function (initialDocCount) {
             agent
                 .post("/post/new")
@@ -52,11 +51,10 @@ describe('Posts', function() {
                 // Make a request to create another
                 .send(newPost)
                 .then(function (res) {
+                    console.log('howdy')
                     Post.estimatedDocumentCount()
-                    console.log('hello1')
                         .then(function (newDocCount) {
                             // Check that the database has one more post in it
-                            console.log('hello2')
                             expect(res).to.have.status(200);
                             // Check that the database has one more post in it
                             expect(newDocCount).to.be.equal(initialDocCount + 1)
